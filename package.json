@@ -1,0 +1,22 @@
+{
+  "name": "gazette",
+  "version": "1.0.0",
+  "description": "microservice for GAZETTE app. put news in the DDBB from NewsApi",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xavifserra/GazetteMicroservice.git"
+  },
+  "keywords": [
+    "microservice"
+  ],
+  "author": "xavifs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xavifserra/GazetteMicroservice/issues"
+  },
+  "homepage": "https://github.com/xavifserra/GazetteMicroservice#readme"
+}
