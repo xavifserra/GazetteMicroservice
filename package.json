@@ -4,7 +4,7 @@
   "description": "microservice for GAZETTE app. put news in the DDBB from NewsApi",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon index.js"
+    "test": "nodemon microservice.js"
   },
   "repository": {
     "type": "git",
@@ -13,10 +13,19 @@
   "keywords": [
     "microservice"
   ],
-  "author": "xavifs",
+  "author": "xavifserra",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/xavifserra/GazetteMicroservice/issues"
   },
-  "homepage": "https://github.com/xavifserra/GazetteMicroservice#readme"
+  "homepage": "https://github.com/xavifserra/GazetteMicroservice#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "connect-mongo": "^2.0.1",
+    "debug": "~2.6.9",
+    "http-errors": "~1.6.2",
+    "mongoose": "^5.2.7",
+    "morgan": "~1.9.0",
+    "newsapi": "^2.3.0"
+  }
 }
