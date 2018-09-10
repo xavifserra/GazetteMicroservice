@@ -28,6 +28,6 @@ const articleSchema = new mongoose.Schema({
 
 });
 
-const Article = mongoose.model(process.env.DATABASE, articleSchema);
+const Article = mongoose.model(process.env.MICROSERVICE_DATABASE, articleSchema);
 
-module.exports = ArticleMSRV;
+module.exports = Article; 
