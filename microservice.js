@@ -71,8 +71,7 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
 app.get('/', (req, res, next) => {
   res.redirect('status');
-})
-app.get('/status', (req, res, next) => {
+}).get('/status', (req, res, next) => {
 
   Articles.collection.estimatedDocumentCount()
     .then((numberOfDocuments) => {
@@ -86,11 +85,9 @@ app.get('/status', (req, res, next) => {
     })
     .catch((e) => {
       serverStatus = 'DDBB error';
-      console.log(e); 
+      console.log(e);
     });
-})
-
-app.put('/run', (req, res, next) => {
+}).get('/run', (req, res, next) => {
   console.log(`processing queries every: ${process.env.MICROSERVICE_TIME / 60000} minutes`);
 
   queriesInterval = setInterval(() => {
@@ -100,16 +97,13 @@ app.put('/run', (req, res, next) => {
   }, process.env.MICROSERVICE_TIME);
   serverStatus = 'running';
   res.redirect('status');
-})
-
-app.put('/stop', (req, res, next) => {
+}).get('/stop', (req, res, next) => {
   queriesCounter = 0;
   serverStatus = 'stopped';
 
   clearInterval(queriesInterval);
   res.redirect('status');
-})
-
-app.listen(process.env.MICROSERVICE_PORT, () => {
+}).listen(process.env.MICROSERVICE_PORT, () => {
   console.log(`GAZETTE microservice is listening at port ${process.env.MICROSERVICE_PORT}`);
 });
+//TODO: pasar a PUT las rutas RUN y STOP
