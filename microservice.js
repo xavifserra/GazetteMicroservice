@@ -86,7 +86,7 @@ app.get('/status', (req, res, next) => {
     })
     .catch((e) => {
       serverStatus = 'DDBB error';
-      console.log(e);
+      console.log(e); 
     });
 })
 
