@@ -71,7 +71,9 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
 app.get('/', (req, res, next) => {
   res.redirect('status');
-}).get('/status', (req, res, next) => {
+})
+
+app.get('/server/status', (req, res, next) => {
 
   Articles.collection.estimatedDocumentCount()
     .then((numberOfDocuments) => {
@@ -87,7 +89,7 @@ app.get('/', (req, res, next) => {
       serverStatus = 'DDBB error';
       console.log(e);
     });
-}).get('/run', (req, res, next) => {
+}).put('/server/run', (req, res, next) => {
   console.log(`processing queries every: ${process.env.MICROSERVICE_TIME / 60000} minutes`);
 
   queriesInterval = setInterval(() => {
@@ -96,13 +98,13 @@ app.get('/', (req, res, next) => {
     queryToAPI();
   }, process.env.MICROSERVICE_TIME);
   serverStatus = 'running';
-  res.redirect('status');
-}).get('/stop', (req, res, next) => {
+  res.redirect('/status');
+}).put('/server/stop', (req, res, next) => {
   queriesCounter = 0;
   serverStatus = 'stopped';
 
   clearInterval(queriesInterval);
-  res.redirect('status');
+  res.redirect('/status');
 }).listen(process.env.MICROSERVICE_PORT, () => {
   console.log(`GAZETTE microservice is listening at port ${process.env.MICROSERVICE_PORT}`);
 });
