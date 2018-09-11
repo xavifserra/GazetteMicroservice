@@ -70,7 +70,7 @@ const queryToAPI = () => {
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
 app.get('/', (req, res, next) => {
-  res.redirect('status');
+  res.redirect('/server/status');
 })
 
 app.get('/server/status', (req, res, next) => {
@@ -98,14 +98,13 @@ app.get('/server/status', (req, res, next) => {
     queryToAPI();
   }, process.env.MICROSERVICE_TIME);
   serverStatus = 'running';
-  res.redirect('/status');
+  res.redirect('/server/status');
 }).put('/server/stop', (req, res, next) => {
   queriesCounter = 0;
   serverStatus = 'stopped';
 
   clearInterval(queriesInterval);
-  res.redirect('/status');
+  res.redirect('/server/status');
 }).listen(process.env.MICROSERVICE_PORT, () => {
   console.log(`GAZETTE microservice is listening at port ${process.env.MICROSERVICE_PORT}`);
 });
-//TODO: pasar a PUT las rutas RUN y STOP
