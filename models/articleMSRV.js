@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const Users = require('./user');
+const UserSchema = Users.schema//require('mongoose').model('User').schema;
 
 
 const  { ObjectId } = mongoose.SchemaTypes;
@@ -7,6 +9,8 @@ const articleSchema = new mongoose.Schema({
   // idArticle: { type: ObjectId, index: true, required: true, auto: true, },
   source: { id: String, name: String },
   author: String,
+  language: { type: String, default: 'en' },
+  postedBy: UserSchema,
   title: String,
   description: String,
   url: String,
@@ -30,4 +34,4 @@ const articleSchema = new mongoose.Schema({
 
 const Article = mongoose.model(process.env.MICROSERVICE_DATABASE, articleSchema);
 
-module.exports = Article; 
+module.exports = Article;

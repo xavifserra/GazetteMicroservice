@@ -1,4 +1,4 @@
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
 const NewsAPI = require('newsapi');
@@ -6,11 +6,12 @@ const NewsAPI = require('newsapi');
 result = require('dotenv').config();
 
 if (result.error) {
-  throw result.error
+  throw result.error;
 }
 
 
 const Articles = require('./models/articleMSRV');
+const Users = require('./models/user');
 
 const newsapi1 = new NewsAPI(process.env.NEWS_API1); // 'da5125e659e04c93929fa448a270da80');
 const newsapi2 = new NewsAPI(process.env.NEWS_API2); // '546fcf53233c4a85a6447c9f27c5d391');
@@ -26,34 +27,48 @@ let queriesInterval;
 const queryToAPI = () => {
   const languages = ['de', 'en', 'es', 'fr', 'it', 'pt'];
   const arrayOfPromises = [];
+  const arrayOfLanguages = [];
 
   languages.forEach((language, index) => {
-    arrayOfPromises.push(switchAPIKey ?
-      newsapi1.v2.topHeadlines({ language }) :
-      newsapi2.v2.topHeadlines({ language })
-      );
-    console.log(`${switchAPIKey ? 'API1' : 'API2'} HeadLines->${index}`);
+    arrayOfPromises.push(switchAPIKey
+      ? newsapi1.v2.topHeadlines({ language })
+      : newsapi2.v2.topHeadlines({ language }));
+
+    arrayOfLanguages.push(language);
+    // console.log(`${switchAPIKey ? 'API1' : 'API2'} HeadLines->${index}`);
   });
 
-  switchAPIKey = !switchAPIKey;
+  Users.findOne({ name:'API' }).exec()
+    .then((result) => {
+      userAPI = result;
+    });
 
-  console.log(`Processing query ${queriesCounter}`);
-  Promise.all(arrayOfPromises)
+    switchAPIKey = !switchAPIKey;
+
+    console.log(`Processing query ${queriesCounter}`);
+    Promise.all(arrayOfPromises)
     .then((topHeadlinesArray) => {
+      //console.log(userAPI);
       topHeadlinesArray.forEach((topHeadlines, index) => {
         // console.log(`source ->${index}`);
 
-        topHeadlines.articles.forEach((article, index) => {
+        topHeadlines.articles.forEach((article) => {
           // console.log(`article ->${index}`);
 
           Articles.findOne(article, (error, match) => {
             if (error) return handleError(error);
             if (!match) {
-              Articles.create(article, (error) => {
+              // console.log(article);
+              //console.log('-------------------------')
+              article.postedBy = userAPI;
+              article.language = arrayOfLanguages[index];
+              // console.log(article);
+
+              Articles.create( article , (error) => {
                 if (error) return handleError(error);
                 articlesCounter++;
                 // console.log('updated');
-              });
+              })
             }
           });
         });
@@ -71,18 +86,17 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
 app.get('/', (req, res, next) => {
   res.redirect('/server/status');
-})
+});
 
 app.get('/server/status', (req, res, next) => {
-
   Articles.collection.estimatedDocumentCount()
     .then((numberOfDocuments) => {
       const response = {
         serviceStatus: serverStatus,
         timeBetweenQueries: `${process.env.MICROSERVICE_TIME}ms (${process.env.MICROSERVICE_TIME / 60000}min)`,
         amountOfQueries: articlesCounter,
-        totalOfArticlesCollected: numberOfDocuments
-      }
+        totalOfArticlesCollected: numberOfDocuments,
+      };
       res.send(response);
     })
     .catch((e) => {
