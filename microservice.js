@@ -54,20 +54,15 @@ const queryToAPI = () => {
 
         topHeadlines.articles.forEach((article) => {
           // console.log(`article ->${index}`);
+          article.postedBy = userAPI;
+          article.language = arrayOfLanguages[index];
 
           Articles.findOne(article, (error, match) => {
             if (error) return handleError(error);
             if (!match) {
-              // console.log(article);
-              //console.log('-------------------------')
-              article.postedBy = userAPI;
-              article.language = arrayOfLanguages[index];
-              // console.log(article);
-
               Articles.create( article , (error) => {
                 if (error) return handleError(error);
                 articlesCounter++;
-                // console.log('updated');
               })
             }
           });
