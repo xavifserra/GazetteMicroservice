@@ -1,6 +1,6 @@
 {
   "name": "gazette",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "microservice for GAZETTE app. put news in the DDBB from NewsApi",
   "main": "index.js",
   "scripts": {
@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/xavifserra/GazetteMicroservice#readme",
   "dependencies": {
+    "appversion": "^1.7.1",
     "body-parser": "^1.18.3",
     "connect-mongo": "^2.0.1",
     "debug": "~2.6.9",

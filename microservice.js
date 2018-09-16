@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
 const NewsAPI = require('newsapi');
+const appv = require('appversion')
 
 result = require('dotenv').config();
 
@@ -91,6 +92,10 @@ app.get('/server/status', (req, res, next) => {
         timeBetweenQueries: `${process.env.MICROSERVICE_TIME}ms (${process.env.MICROSERVICE_TIME / 60000}min)`,
         amountOfQueries: articlesCounter,
         totalOfArticlesCollected: numberOfDocuments,
+        appVersion: appv.getAppVersionSync( (err, data) => {
+          if (err) console.log(err)
+          console.log(data)
+        }).version
       };
       res.send(response);
     })
