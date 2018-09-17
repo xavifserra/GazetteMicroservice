@@ -2,7 +2,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
 const NewsAPI = require('newsapi');
-const appv = require('appversion')
+const appv = require('appversion');
 
 result = require('dotenv').config();
 
@@ -44,12 +44,12 @@ const queryToAPI = () => {
       userAPI = result;
     });
 
-    switchAPIKey = !switchAPIKey;
+  switchAPIKey = !switchAPIKey;
 
-    console.log(`Processing query ${queriesCounter}`);
-    Promise.all(arrayOfPromises)
+  console.log(`Processing query ${queriesCounter}`);
+  Promise.all(arrayOfPromises)
     .then((topHeadlinesArray) => {
-      //console.log(userAPI);
+      // console.log(userAPI);
       topHeadlinesArray.forEach((topHeadlines, index) => {
         // console.log(`source ->${index}`);
 
@@ -58,13 +58,16 @@ const queryToAPI = () => {
           article.postedBy = userAPI;
           article.language = arrayOfLanguages[index];
 
-          Articles.findOne(article, (error, match) => {
+          Articles.findOne({
+            title:article.title,
+            description:article.description,
+          }, (error, match) => {
             if (error) return handleError(error);
             if (!match) {
-              Articles.create( article , (error) => {
+              Articles.create(article, (error) => {
                 if (error) return handleError(error);
                 articlesCounter++;
-              })
+              });
             }
           });
         });
@@ -92,10 +95,10 @@ app.get('/server/status', (req, res, next) => {
         timeBetweenQueries: `${process.env.MICROSERVICE_TIME}ms (${process.env.MICROSERVICE_TIME / 60000}min)`,
         amountOfQueries: articlesCounter,
         totalOfArticlesCollected: numberOfDocuments,
-        appVersion: appv.getAppVersionSync( (err, data) => {
-          if (err) console.log(err)
-          console.log(data)
-        }).version
+        appVersion: appv.getAppVersionSync((err, data) => {
+          if (err) console.log(err);
+          console.log(data);
+        }).version,
       };
       res.send(response);
     })
@@ -119,6 +122,8 @@ app.get('/server/status', (req, res, next) => {
 
   clearInterval(queriesInterval);
   res.redirect('/server/status');
-}).listen(process.env.MICROSERVICE_PORT, () => {
+});
+
+app.listen(process.env.MICROSERVICE_PORT, () => {
   console.log(`GAZETTE microservice is listening at port ${process.env.MICROSERVICE_PORT}`);
 });

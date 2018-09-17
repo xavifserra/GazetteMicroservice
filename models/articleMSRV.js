@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 const Users = require('./user');
-const UserSchema = Users.schema//require('mongoose').model('User').schema;
 
-
+const UserSchema = Users.schema;
 const  { ObjectId } = mongoose.SchemaTypes;
 
 const articleSchema = new mongoose.Schema({
