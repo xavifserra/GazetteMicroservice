@@ -58,10 +58,7 @@ const queryToAPI = () => {
           article.postedBy = userAPI;
           article.language = arrayOfLanguages[index];
 
-          Articles.findOne({
-            title:article.title,
-            description:article.description,
-          }, (error, match) => {
+          Articles.findOne({ title:article.title }, (error, match) => {
             if (error) return handleError(error);
             if (!match) {
               Articles.create(article, (error) => {
