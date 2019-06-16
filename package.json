@@ -1,0 +1,46 @@
+{
+  "name": "gazette",
+  "version": "1.0.1",
+  "description": "microservice for GAZETTE app. put news in the DDBB from NewsApi",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon microservice.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xavifserra/GazetteMicroservice.git"
+  },
+  "keywords": [
+    "microservice"
+  ],
+  "author": "xavifserra",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xavifserra/GazetteMicroservice/issues"
+  },
+  "homepage": "https://github.com/xavifserra/GazetteMicroservice#readme",
+  "dependencies": {
+    "appversion": "^1.7.1",
+    "body-parser": "^1.19.0",
+    "connect-mongo": "^2.0.3",
+    "debug": "~4.1.1",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "http-errors": "~1.7.2",
+    "mongodb": "^3.2.7",
+    "mongoose": "^5.6.0",
+    "morgan": "^1.9.1",
+    "newsapi": "^2.4.0"
+  },
+  "devDependencies": {
+    "axios": "^0.19.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.3",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-react": "^7.13.0",
+    "jquery": "^3.4.1",
+    "nodemon": "^1.19.1"
+  }
+}
